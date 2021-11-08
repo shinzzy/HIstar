@@ -1,22 +1,24 @@
 #include "HIstar.h"
 
+# ì§€ìˆ˜ ë°”ë³´ 
+
 
 HIstar::HIstar(QWidget* parent)
 	: QMainWindow(parent)
 
 {
 	ui.setupUi(this);
-	connect(ui.search, SIGNAL(clicked()), this, SLOT(search()));// Á¶È¸ÇÏ±â¹öÆ°
-	connect(ui.login_1, SIGNAL(clicked()), this, SLOT(login()));// ·Î±×ÀÎ ¹öÆ°
-	connect(ui.refresh_2, SIGNAL(clicked()), this, SLOT(refresh()));// »õ·Î°íÄ§ ¹öÆ°
+	connect(ui.search, SIGNAL(clicked()), this, SLOT(search()));// ì¡°íšŒí•˜ê¸°ë²„íŠ¼
+	connect(ui.login_1, SIGNAL(clicked()), this, SLOT(login()));// ë¡œê·¸ì¸ ë²„íŠ¼
+	connect(ui.refresh_2, SIGNAL(clicked()), this, SLOT(refresh()));// ìƒˆë¡œê³ ì¹¨ ë²„íŠ¼
 	//connect(ui.add_2, SIGNAL(clicked()), this, SLOT(add_item()));
-	connect(ui.order_2, SIGNAL(clicked()), this, SLOT(order()));// ÁÖ¹®ÇÏ±â ¹öÆ°
+	connect(ui.order_2, SIGNAL(clicked()), this, SLOT(order()));// ì£¼ë¬¸í•˜ê¸° ë²„íŠ¼
 	//connect(ui.remove_2, SIGNAL(clicked()), this, SLOT(remove()));
 	ui.spinBox->setRange(1, 100);
 
 
 }
-// ·Î±×ÀÎ
+// ë¡œê·¸ì¸
 void HIstar::login() {
 
 	QString id = ui.textEdit->toPlainText();
@@ -29,13 +31,13 @@ void HIstar::login() {
 		}
 		else if (pw != "1234")
 		{
-			// ºñ¹Ğ¹øÈ£ Æ²¸±½Ã
+			// ë¹„ë°€ë²ˆí˜¸ í‹€ë¦´ì‹œ
 			QMessageBox::information(this, "error", "Invalid PW. Please try again.");
 		}
 	}
 	else
 	{
-		// ¾ÆÀÌµğ Æ²¸±½Ã
+		// ì•„ì´ë”” í‹€ë¦´ì‹œ
 		QMessageBox::information(this, "error", "Invalid ID. Please try again.");
 	}
 	ui.refresh_2->setEnabled(false);
@@ -45,7 +47,7 @@ void HIstar::login() {
 }
 
 
-// Á¶È¸ÇÏ±â
+// ì¡°íšŒí•˜ê¸°
 
 void HIstar::search() {
 	{
@@ -59,7 +61,7 @@ void HIstar::search() {
 
 		conn_result = mysql_real_connect(&conn, DB_HOST, DB_USER, DB_PASS, DB_NAME, 3306, (const char*)NULL, 0);
 		
-		// ÄÃ·³ °¡Á®¿À±â
+		// ì»¬ëŸ¼ ê°€ì ¸ì˜¤ê¸°
 		
 		const char* query = "SELECT * FROM ingredient";
 		query_state = mysql_query(conn_result, query);
@@ -71,10 +73,10 @@ void HIstar::search() {
 		{
 			int row_count = ui.tableWidget->rowCount();
 			ui.tableWidget->insertRow(row_count);
-			ui.tableWidget->resizeColumnsToContents();//°´Ã¼¿ä¼ÒµéÀÇ ±æÀÌ¿¡ Å×ÀÌºíÀ§Á¬Çì´õÀÇ ±æÀÌ¸¦ ¸ÂÃß´Â ÄÚµå
-			ui.tableWidget->horizontalHeader()->setStretchLastSection(true);//Çì´õ(¸ÇÀ§ÀÇ ¿­)¸¦ À§Á¬¾È¿¡ ²Ë Ã¤¿ì´Â? ±×·± ÄÚµå
-			ui.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//¼Ó¿¡ µé¾îÀÖ´Â °´Ã¼¸¦ ¼öÁ¤ÇÏÁö ¸øÇÏ°Ô ÇÏ±âÀ§ÇÑ ÄÚµå
-			ui.comboBox->addItem(row[0]); // ÄŞº¸¹Ú½º¿¡ ¾ÆÀÌÅÛ Ãß°¡ÇÏ´Â ºÎºĞ
+			ui.tableWidget->resizeColumnsToContents();//ê°ì²´ìš”ì†Œë“¤ì˜ ê¸¸ì´ì— í…Œì´ë¸”ìœ„ì ¯í—¤ë”ì˜ ê¸¸ì´ë¥¼ ë§ì¶”ëŠ” ì½”ë“œ
+			ui.tableWidget->horizontalHeader()->setStretchLastSection(true);//í—¤ë”(ë§¨ìœ„ì˜ ì—´)ë¥¼ ìœ„ì ¯ì•ˆì— ê½‰ ì±„ìš°ëŠ”? ê·¸ëŸ° ì½”ë“œ
+			ui.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//ì†ì— ë“¤ì–´ìˆëŠ” ê°ì²´ë¥¼ ìˆ˜ì •í•˜ì§€ ëª»í•˜ê²Œ í•˜ê¸°ìœ„í•œ ì½”ë“œ
+			ui.comboBox->addItem(row[0]); // ì½¤ë³´ë°•ìŠ¤ì— ì•„ì´í…œ ì¶”ê°€í•˜ëŠ” ë¶€ë¶„
 			for (int i = 0; i < column_cnt; i++)
 			{
 				qDebug() << row[i] << "\t";
@@ -94,7 +96,7 @@ void HIstar::search() {
 	ui.refresh_2->setEnabled(true);
 }
 
-// »õ·Î°íÄ§
+// ìƒˆë¡œê³ ì¹¨
 void HIstar::refresh() {
 	MYSQL conn;
 	MYSQL* conn_result;
@@ -102,7 +104,7 @@ void HIstar::refresh() {
 	MYSQL_ROW row;
 	int query_state;
 
-	// Å×ÀÌºí Áö¿ì±â
+	// í…Œì´ë¸” ì§€ìš°ê¸°
 	while (ui.tableWidget->rowCount() > 0) ui.tableWidget->removeRow(0);
 
 	mysql_init(&conn);
@@ -115,14 +117,14 @@ void HIstar::refresh() {
 	result = mysql_store_result(conn_result);
 	int column_cnt = mysql_num_fields(result);
 
-	// µ¥ÀÌÅÍ Å×ÀÌºí¿¡ ³Ö±â
+	// ë°ì´í„° í…Œì´ë¸”ì— ë„£ê¸°
 	while (row = mysql_fetch_row(result))
 	{
 		int row_count = ui.tableWidget->rowCount();
 		ui.tableWidget->insertRow(row_count);
-		//ui.tableWidget->resizeColumnsToContents();//°´Ã¼¿ä¼ÒµéÀÇ ±æÀÌ¿¡ Å×ÀÌºíÀ§Á¬Çì´õÀÇ ±æÀÌ¸¦ ¸ÂÃß´Â ÄÚµå
-		//ui.tableWidget->horizontalHeader()->setStretchLastSection(true);//Çì´õ(¸ÇÀ§ÀÇ ¿­)¸¦ À§Á¬¾È¿¡ ²Ë Ã¤¿ì´Â? ±×·± ÄÚµå
-		//ui.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//¼Ó¿¡ µé¾îÀÖ´Â °´Ã¼¸¦ ¼öÁ¤ÇÏÁö ¸øÇÏ°Ô ÇÏ±âÀ§ÇÑ ÄÚµå
+		//ui.tableWidget->resizeColumnsToContents();//ê°ì²´ìš”ì†Œë“¤ì˜ ê¸¸ì´ì— í…Œì´ë¸”ìœ„ì ¯í—¤ë”ì˜ ê¸¸ì´ë¥¼ ë§ì¶”ëŠ” ì½”ë“œ
+		//ui.tableWidget->horizontalHeader()->setStretchLastSection(true);//í—¤ë”(ë§¨ìœ„ì˜ ì—´)ë¥¼ ìœ„ì ¯ì•ˆì— ê½‰ ì±„ìš°ëŠ”? ê·¸ëŸ° ì½”ë“œ
+		//ui.tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);//ì†ì— ë“¤ì–´ìˆëŠ” ê°ì²´ë¥¼ ìˆ˜ì •í•˜ì§€ ëª»í•˜ê²Œ í•˜ê¸°ìœ„í•œ ì½”ë“œ
 		for (int i = 0; i < column_cnt; i++)
 		{
 			qDebug() << row[i] << "\t";
@@ -139,12 +141,12 @@ void HIstar::refresh() {
 
 }
 
-void HIstar::order()//¹ßÁÖÇÏ±â
+void HIstar::order()//ë°œì£¼í•˜ê¸°
 {
-	// ¹ßÁÖÇÒ¶§ ¾÷µ¥ÀÌÆ® ÇÏ´Â °³¼ö 
+	// ë°œì£¼í• ë•Œ ì—…ë°ì´íŠ¸ í•˜ëŠ” ê°œìˆ˜ 
 	each111 = 0;
 
-	// °¡°İ
+	// ê°€ê²©
 	int price = 0;
 
 	
@@ -153,12 +155,12 @@ void HIstar::order()//¹ßÁÖÇÏ±â
 	//qDebug() << each;
 
 
-	// ¹ßÁÖ ¹× ±¸¸Å±â·Ï¿¡ µé¾î°¡´Â ³¯Â¥
+	// ë°œì£¼ ë° êµ¬ë§¤ê¸°ë¡ì— ë“¤ì–´ê°€ëŠ” ë‚ ì§œ
 	time_t timer;
 	struct tm* t;
 	timer = time(NULL);
 	t = localtime(&timer);
-	QString time = QString::number(t->tm_year + 1900) + "-" + QString::number(t->tm_mon + 1) + "-" + QString::number(t->tm_mday);  //ÇöÀç³¯Â¥
+	QString time = QString::number(t->tm_year + 1900) + "-" + QString::number(t->tm_mon + 1) + "-" + QString::number(t->tm_mday);  //í˜„ì¬ë‚ ì§œ
 
 
 
@@ -177,7 +179,7 @@ void HIstar::order()//¹ßÁÖÇÏ±â
 	int each = ui.spinBox->value();
 
 
-	////////////ÃÑÀç°í·®°¡Á®¿À±â
+	////////////ì´ì¬ê³ ëŸ‰ê°€ì ¸ì˜¤ê¸°
 
 
 
@@ -202,20 +204,20 @@ void HIstar::order()//¹ßÁÖÇÏ±â
 	//ui.tableWidget_2->setItem(row_count1, 2, new QTableWidgetItem(each));
 	
 
-	// ¹ßÁÖ¸ñ·Ï Å×ÀÌºí¿¡ ³Ö±â 
+	// ë°œì£¼ëª©ë¡ í…Œì´ë¸”ì— ë„£ê¸° 
 
-	ui.tableWidget_2->resizeColumnsToContents();//°´Ã¼¿ä¼ÒµéÀÇ ±æÀÌ¿¡ Å×ÀÌºíÀ§Á¬Çì´õÀÇ ±æÀÌ¸¦ ¸ÂÃß´Â ÄÚµå
-	ui.tableWidget_2->horizontalHeader()->setStretchLastSection(true);//Çì´õ(¸ÇÀ§ÀÇ ¿­)¸¦ À§Á¬¾È¿¡ ²Ë Ã¤¿ì´Â? ±×·± ÄÚµå
-	ui.tableWidget_2->setEditTriggers(QAbstractItemView::NoEditTriggers);//¼Ó¿¡ µé¾îÀÖ´Â °´Ã¼¸¦ ¼öÁ¤ÇÏÁö ¸øÇÏ°Ô ÇÏ±âÀ§ÇÑ ÄÚµå
+	ui.tableWidget_2->resizeColumnsToContents();//ê°ì²´ìš”ì†Œë“¤ì˜ ê¸¸ì´ì— í…Œì´ë¸”ìœ„ì ¯í—¤ë”ì˜ ê¸¸ì´ë¥¼ ë§ì¶”ëŠ” ì½”ë“œ
+	ui.tableWidget_2->horizontalHeader()->setStretchLastSection(true);//í—¤ë”(ë§¨ìœ„ì˜ ì—´)ë¥¼ ìœ„ì ¯ì•ˆì— ê½‰ ì±„ìš°ëŠ”? ê·¸ëŸ° ì½”ë“œ
+	ui.tableWidget_2->setEditTriggers(QAbstractItemView::NoEditTriggers);//ì†ì— ë“¤ì–´ìˆëŠ” ê°ì²´ë¥¼ ìˆ˜ì •í•˜ì§€ ëª»í•˜ê²Œ í•˜ê¸°ìœ„í•œ ì½”ë“œ
 
-	ui.tableWidget_2->insertRow(ui.tableWidget_2->rowCount()); // Çà Ãß°¡
+	ui.tableWidget_2->insertRow(ui.tableWidget_2->rowCount()); // í–‰ ì¶”ê°€
 	ui.tableWidget_2->setItem(ui.tableWidget_2->rowCount() - 1, 0, new QTableWidgetItem(item));
 	ui.tableWidget_2->setItem(ui.tableWidget_2->rowCount() - 1, 1, new QTableWidgetItem(QString::number(each)));
 	ui.tableWidget_2->setItem(ui.tableWidget_2->rowCount() - 1, 2, new QTableWidgetItem(time));
 
 
 
-	// ¹ßÁÖ ³Ö´Â Äõ¸®¹®
+	// ë°œì£¼ ë„£ëŠ” ì¿¼ë¦¬ë¬¸
 	QString str = QString("UPDATE ingredient SET remain_quantity = %1 WHERE ingredient_name = '%2'").arg(each111).arg(item);
 
 	char strChar[10000];
@@ -224,9 +226,9 @@ void HIstar::order()//¹ßÁÖÇÏ±â
 	const char* query = strChar;
 	mysql_query(conn_result, query);
 
-	// ±¸¸Å±â·Ï ³Ö´Â Äõ¸®¹®
+	// êµ¬ë§¤ê¸°ë¡ ë„£ëŠ” ì¿¼ë¦¬ë¬¸
 
-	// ±¸¸Å±â·Ï¿¡ ³Ö´Â °¡°İ
+	// êµ¬ë§¤ê¸°ë¡ì— ë„£ëŠ” ê°€ê²©
 	if (item == "beans")
 	{
 		price = 200;
@@ -334,7 +336,7 @@ void HIstar::order()//¹ßÁÖÇÏ±â
 
 	if (each111 > 500)
 	{
-		// Àç·á°¡ 500°³ÀÌ»óÀÏ¶§ ÁÖ¹®½Ã ÁÖ¹®Àº µÇÁö¸¸ ±×ÈÄ¿¡ ¹öÆ° Àá±è
+		// ì¬ë£Œê°€ 500ê°œì´ìƒì¼ë•Œ ì£¼ë¬¸ì‹œ ì£¼ë¬¸ì€ ë˜ì§€ë§Œ ê·¸í›„ì— ë²„íŠ¼ ì ê¹€
 		QMessageBox::information(this, "warning", "We don't order now because we're full of ingredients.");
 		ui.order_2->setEnabled(false);
 	}
@@ -354,13 +356,13 @@ void HIstar::order()//¹ßÁÖÇÏ±â
 	mysql_close(&conn);
 }
 
-// ¹ßÁÖ½Ã Àç°íÀÇ ÃÑ·® °¡Á®¿À±â
+// ë°œì£¼ì‹œ ì¬ê³ ì˜ ì´ëŸ‰ ê°€ì ¸ì˜¤ê¸°
 void HIstar::add_item()
 {
-	// ÄŞº¸¹Ú½º¿¡ ÀÖ´Â ¾ÆÀÌÅÛÀ» ¹Ş¾Æ¿À´Â ÄÚµå
+	// ì½¤ë³´ë°•ìŠ¤ì— ìˆëŠ” ì•„ì´í…œì„ ë°›ì•„ì˜¤ëŠ” ì½”ë“œ
 	QString item1 = ui.comboBox->currentText();
 
-	//½ºÇÉ¹Ú½º¿¡ ÀÖ´Â °ªÀ» ¹Ş¾Æ¿À´Â ÄÚµå
+	//ìŠ¤í•€ë°•ìŠ¤ì— ìˆëŠ” ê°’ì„ ë°›ì•„ì˜¤ëŠ” ì½”ë“œ
 	int num = ui.spinBox->value();
 
 
@@ -376,7 +378,7 @@ void HIstar::add_item()
 	conn_result = mysql_real_connect(&conn, DB_HOST, DB_USER, DB_PASS, DB_NAME, 3306, (const char*)NULL, 0);
 	
 
-	// ÃÑÀç°í·®À» °¡Á®¿À´Â ÄÚµå
+	// ì´ì¬ê³ ëŸ‰ì„ ê°€ì ¸ì˜¤ëŠ” ì½”ë“œ
 	QString str1 = QString("SELECT remain_quantity FROM ingredient WHERE ingredient_name = '%1'").arg(item);
 	char strChar1[1000];
 	memcpy(&strChar1, str1.toUtf8().data(), (size_t)str1.toUtf8().size());
@@ -390,8 +392,8 @@ void HIstar::add_item()
 
 	//QString fu = QString(row[2]); 
 	qDebug() << result;
-	qDebug() << item1;	//¼±ÅÃµÈ ÄŞº¸¹Ú½ºÀÇ Àç·áÀÌ¸§
-	qDebug() << row[0];	//ÃÑÀç°í·®
+	qDebug() << item1;	//ì„ íƒëœ ì½¤ë³´ë°•ìŠ¤ì˜ ì¬ë£Œì´ë¦„
+	qDebug() << row[0];	//ì´ì¬ê³ ëŸ‰
 	qDebug() << num;
 	each111 = num + atoi(row[0]);
 	qDebug() << "each ::    "<<each111;
