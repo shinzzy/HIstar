@@ -1,6 +1,7 @@
 #include "HIstar.h"
 
 # 지수 바보 
+# 안녕하세요
 
 
 HIstar::HIstar(QWidget* parent)
