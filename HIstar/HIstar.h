@@ -11,7 +11,7 @@
 #include <ctime>
 #include <string>
 using std::string;
-
+#include <iostream>
 
 
 #define DB_HOST "192.168.0.37"
